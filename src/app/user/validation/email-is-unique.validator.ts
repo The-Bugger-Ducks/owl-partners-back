@@ -1,16 +1,24 @@
 import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
 import { UserRepository } from "../user.repository";
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnprocessableEntityException } from "@nestjs/common";
+import { PrismaService } from "src/infra/database";
 
 @Injectable()
 @ValidatorConstraint({ async: true })
 export class EmailIsUniqueValidator implements ValidatorConstraintInterface {
 
-  constructor(private userRepository: UserRepository) { }
+  constructor(private readonly prisma: PrismaService) { }
 
-  async validate(value: any, validationArguments?: ValidationArguments): Promise<boolean> {
-    const userExists = await this.userRepository.userExists(value);
-    return !userExists;
+  async validate(value: any, validationArguments?: ValidationArguments) {
+    return this.prisma.user
+      .findFirst({ where: { email: value } })
+      .then((user) => {
+        if (user) {
+          throw new UnprocessableEntityException('O e-mail informado já existe.');
+        } else {
+          return true;
+        }
+      });
   }
 }
 

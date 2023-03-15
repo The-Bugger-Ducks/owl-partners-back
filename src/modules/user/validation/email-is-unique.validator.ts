@@ -1,7 +1,6 @@
 import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
-import { UserRepository } from "../user.repository";
 import { Injectable, UnprocessableEntityException } from "@nestjs/common";
-import { PrismaService } from "src/infra/database";
+import { PrismaService } from "src/database";
 
 @Injectable()
 @ValidatorConstraint({ async: true })

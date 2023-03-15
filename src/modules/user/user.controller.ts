@@ -1,30 +1,29 @@
 import { Body, Controller, Delete, Get, InternalServerErrorException, NotFoundException, Param, Post, Put } from "@nestjs/common";
 import { v4 as uuid } from 'uuid';
 import { CreateUserDTO } from "./dto/createUser.dto";
-import { UserEntity } from "./user.entity";
 import { ListUsersDTO } from "./dto/ListUsers.dto";
 import { UpdateUserDTO } from "./dto/updateUser.dto";
-import { UserRepository } from "./user.repository";
+import { UserService } from "./user.service";
 
 @Controller('/users')
 export class UserController {
 
-  constructor(private userRepository: UserRepository) { }
+  constructor(private userService: UserService) { }
 
   @Post()
   async CreateUser(@Body() userData: CreateUserDTO) {
-    return this.userRepository.create(userData);
+    return this.userService.create(userData);
   }
 
   @Get()
   async index() {
-    const users = this.userRepository.findAll();
+    const users = this.userService.findAll();
     return users;
   }
 
   // @Put('/:id')
   // async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {
-  //   const userUpdated = await this.userRepository.update(id, dataToUpdate);
+  //   const userUpdated = await this.userService.update(id, dataToUpdate);
   //   return {
   //     user: userUpdated,
   //     message: 'Usuário Atualizado com sucesso.'
@@ -33,7 +32,7 @@ export class UserController {
 
   @Delete('/:id')
   async deleteUser(@Param('id') id: string) {
-    const userFound = await this.userRepository.findById(id);
+    const userFound = await this.userService.findById(id);
     if (userFound === null) throw new NotFoundException('Usuário não encontrado.')
 
     return { message: 'Usuário removido com sucesso.' }

@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './app/user/user.module';
-import { PrismaModule } from './infra/database';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [UserModule],

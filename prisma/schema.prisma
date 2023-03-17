@@ -13,9 +13,82 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   name      String?
+  lastName  String?
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  role      UserRole @default(SIMPLE)
+
+  comments PartnerComment[]
 
   @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  SIMPLE
+}
+
+model Partner {
+  id String @id @default(uuid())
+
+  name        String
+  email       String? @unique
+  phoneNumber String?
+
+  zipCode      String?
+  state        String?
+  city         String?
+  neighborhood String?
+  address      String?
+
+  classification PartnerClassification?
+  status         PartnerStatus          @default(P)
+  memberNumber   Int?
+
+  createdAt DateTime @default(now())
+
+  comments PartnerComment[]
+
+  disabled Boolean @default(false)
+
+  @@map("partners")
+}
+
+enum PartnerClassification {
+  COLEGIOS
+  UNIVERSIDADES
+  SECRETARIAS
+  GOVERNOS
+}
+
+enum PartnerStatus {
+  P
+  PC
+  PR
+  ADOCE
+  ADOCDA
+  ADOCD
+  DOCD
+  PREPES
+  AESL
+  AESAG
+  PA
+  PF
+}
+
+model PartnerComment {
+  id String @id @default(uuid())
+
+  Partner   Partner? @relation(fields: [partnerId], references: [id])
+  partnerId String?
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+
+  comment String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("partner_comments")
 }

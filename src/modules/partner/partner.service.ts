@@ -7,7 +7,7 @@ import { UpdatePartnerDTO } from './dto/updatePartner.dto';
 
 @Injectable()
 export class PartnerService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async create(partner: CreatePartnerDTO) {
     return this.prismaService.partner.create({

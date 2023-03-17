@@ -8,7 +8,8 @@ import { PrismaModule } from "src/database/prisma/prisma.module";
 @Module({
   imports: [PrismaModule],
   controllers: [UserController],
-  providers: [UserService, EmailIsUniqueValidator]
+  providers: [UserService, EmailIsUniqueValidator],
+  exports: [UserService],
 })
 export class UserModule {
 

@@ -1,7 +1,7 @@
 import { IsEnum, IsNotEmpty } from "class-validator"
 import { CommentType } from "../enums/CommentType.enum"
 
-export class CreateCommentDTO {
+export class UpdateCommentDTO {
 
   @IsNotEmpty({ message: 'O id do parceiro(partnerID) precisa ser fornecido.' })
   partnerId: string

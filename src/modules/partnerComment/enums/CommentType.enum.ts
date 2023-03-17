@@ -1,3 +1,4 @@
-export type CommentType =
-  | 'ATUALIZACAO'
-  | 'ANOTACAO';
+export enum CommentType {
+  ATUALIZACAO = 'ATUALIZACAO',
+  ANOTACAO = 'ANOTACAO'
+}

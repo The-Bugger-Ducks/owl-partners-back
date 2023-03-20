@@ -13,6 +13,18 @@ export class PartnerCommentService {
     })
   }
 
+  async listCommentsByPartner(id: string) {
+    return await this.prismaService.partnerComment.findMany({
+      where: {
+        id: id
+      },
+      orderBy: {
+        // createdAt: 'desc',
+        updatedAt: 'desc'
+      },
+    })
+  }
+
   update(id: string, comment: UpdateCommentDTO) {
     return this.prismaService.partnerComment.update({
       data: comment,

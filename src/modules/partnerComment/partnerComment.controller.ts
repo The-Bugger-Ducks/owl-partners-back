@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { CreateCommentDTO } from "./dto/createComment.dto";
 import { PartnerCommentService } from "./partnerComment.service";
 import { UpdateCommentDTO } from "./dto/updateComment.dto";
@@ -14,8 +14,13 @@ export class PartnerCommentController {
     return await this.partnerCommentService.addComment(commentData);
   }
 
+  @Get('comment/:partnerId')
+  async list(@Param('partnerId') partnerId: string) {
+    return await this.partnerCommentService.listCommentsByPartner(partnerId);
+  }
+
   @Put('comment/:id')
-  async update(@Param('id') id: string, @Body() commentData: UpdateCommentDTO) {
-    return await this.partnerCommentService.update(id, commentData);
+  async update(@Param('partnerId') partnerId: string, @Body() commentData: UpdateCommentDTO) {
+    return await this.partnerCommentService.update(partnerId, commentData);
   }
 }

@@ -5,8 +5,10 @@ import { ListUsersDTO } from "./dto/ListUsers.dto";
 import { UpdateUserDTO } from "./dto/updateUser.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller('/users')
+@ApiTags('users')
 export class UserController {
 
   constructor(private userService: UserService) { }

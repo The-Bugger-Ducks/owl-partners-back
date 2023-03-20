@@ -12,10 +12,12 @@ import {
 import { PartnerService } from './partner.service';
 import { CreatePartnerDTO } from './dto/createPartner.dto';
 import { UpdatePartnerDTO } from './dto/updatePartner.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('/partners')
+@ApiTags('partner')
 export class PartnerController {
-  constructor(private partnerService: PartnerService) {}
+  constructor(private partnerService: PartnerService) { }
 
   @Post()
   async createPartner(@Body() partnerData: CreatePartnerDTO) {

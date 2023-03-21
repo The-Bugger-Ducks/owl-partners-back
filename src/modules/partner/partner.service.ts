@@ -7,58 +7,62 @@ import { UpdatePartnerDTO } from './dto/updatePartner.dto';
 
 @Injectable()
 export class PartnerService {
-  constructor(private readonly prismaService: PrismaService) {}
+	constructor(private readonly prismaService: PrismaService) {}
 
-  async create(partner: CreatePartnerDTO) {
-    return this.prismaService.partner.create({
-      data: partner,
-    });
-  }
+	async create(partner: CreatePartnerDTO) {
+		return this.prismaService.partner.create({
+			data: partner,
+		});
+	}
 
-  async findAll() {
-    return this.prismaService.partner.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-  }
+	async findAll(disabled?: boolean) {
+		return this.prismaService.partner.findMany({
+			where: {
+				disabled: disabled ?? false,
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+		});
+	}
 
-  async findByName(name: string) {
-    return this.prismaService.partner.findMany({
-      where: {
-        name: { contains: name, mode: 'insensitive' },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-  }
+	async findByName(name: string, disabled?: boolean) {
+		return this.prismaService.partner.findMany({
+			where: {
+				name: { contains: name, mode: 'insensitive' },
+				disabled: disabled ?? false,
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+		});
+	}
 
-  async findById(id: string) {
-    return this.prismaService.partner.findFirstOrThrow({
-      where: {
-        id,
-      },
-    });
-  }
+	async findById(id: string) {
+		return this.prismaService.partner.findFirstOrThrow({
+			where: {
+				id,
+			},
+		});
+	}
 
-  update(id: string, partner: UpdatePartnerDTO) {
-    return this.prismaService.partner.update({
-      data: partner,
-      where: {
-        id,
-      },
-    });
-  }
+	update(id: string, partner: UpdatePartnerDTO) {
+		return this.prismaService.partner.update({
+			data: partner,
+			where: {
+				id,
+			},
+		});
+	}
 
-  disable(id: string) {
-    return this.prismaService.partner.update({
-      data: {
-        disabled: true,
-      },
-      where: {
-        id: id,
-      },
-    });
-  }
+	disable(id: string) {
+		return this.prismaService.partner.update({
+			data: {
+				disabled: true,
+			},
+			where: {
+				id: id,
+			},
+		});
+	}
 }

@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 
 import { PartnerService } from './partner.service';
 import { CreatePartnerDTO } from './dto/createPartner.dto';
@@ -24,9 +15,13 @@ export class PartnerController {
     return this.partnerService.create(partnerData);
   }
 
-  @Get('/search/:name')
-  async partnersByName(@Param('name') name: string) {
-    return this.partnerService.findByName(name);
+  @Get('/search')
+  async partnersByName(@Query('name') name: string, @Query('disabled') disabled: boolean) {
+    if (name === null || name === undefined) {
+      return this.partnerService.findAll(disabled);
+    }
+
+    return this.partnerService.findByName(name, disabled);
   }
 
   @Get(':id')
@@ -46,10 +41,7 @@ export class PartnerController {
   }
 
   @Put('/:id')
-  async updatePartner(
-    @Param('id') id: string,
-    @Body() dataToUpdate: UpdatePartnerDTO,
-  ) {
+  async updatePartner(@Param('id') id: string, @Body() dataToUpdate: UpdatePartnerDTO) {
     const partnerFound = await this.partnerService.findById(id);
 
     if (partnerFound === null) {

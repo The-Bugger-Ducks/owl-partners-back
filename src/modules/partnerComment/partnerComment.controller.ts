@@ -19,8 +19,8 @@ export class PartnerCommentController {
     return await this.partnerCommentService.listCommentsByPartner(partnerId);
   }
 
-  @Put('comment/:id')
-  async update(@Param('partnerId') partnerId: string, @Body() commentData: UpdateCommentDTO) {
-    return await this.partnerCommentService.update(partnerId, commentData);
+  @Put('comment/:commentId')
+  async update(@Param('commentId') commentId: string, @Body() commentData: UpdateCommentDTO) {
+    return await this.partnerCommentService.update(commentId, commentData);
   }
 }

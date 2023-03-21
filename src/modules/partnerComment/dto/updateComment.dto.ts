@@ -4,6 +4,10 @@ import { ApiProperty } from "@nestjs/swagger"
 
 export class UpdateCommentDTO {
 
+  @IsNotEmpty({ message: 'O id do parceiro(partnerID) precisa ser fornecido.' })
+  @ApiProperty()
+  partnerId: string
+
   @IsNotEmpty({ message: 'O id do usuário(userID) precisa ser fornecido' })
   @ApiProperty()
   userId: string

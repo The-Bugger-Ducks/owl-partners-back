@@ -85,10 +85,16 @@ model PartnerComment {
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
 
-  comment String
+  comment     String
+  commentType partnerCommentsType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("partner_comments")
+}
+
+enum partnerCommentsType {
+  ATUALIZACAO
+  ANOTACAO
 }

@@ -1,7 +1,7 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma/prisma.service";
 import { CreateUserDTO } from './dto/createUser.dto';
 import { UpdateUserDTO } from './dto/updateUser.dto';
@@ -52,6 +52,13 @@ export class UserService {
   userExists(email: string): boolean {
     const userFound = this.prismaService.user.findUnique({ where: { email: email } });
     return userFound === undefined;
+  }
+
+  findUserByEmail(email: string) {
+    const userFound = this.prismaService.user.findUnique({ where: { email: email } });
+
+    if (!userFound) throw new NotFoundException('Usuário não encontrado');
+    return userFound;
   }
 
 }

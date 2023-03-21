@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 
 import { PartnerService } from './partner.service';
 import { CreatePartnerDTO } from './dto/createPartner.dto';
@@ -15,62 +6,63 @@ import { UpdatePartnerDTO } from './dto/updatePartner.dto';
 
 @Controller('/partners')
 export class PartnerController {
-  constructor(private partnerService: PartnerService) {}
+	constructor(private partnerService: PartnerService) {}
 
-  @Post()
-  async createPartner(@Body() partnerData: CreatePartnerDTO) {
-    return this.partnerService.create(partnerData);
-  }
+	@Post()
+	async createPartner(@Body() partnerData: CreatePartnerDTO) {
+		return this.partnerService.create(partnerData);
+	}
 
-  @Get('/search/:name')
-  async partnersByName(@Param('name') name: string) {
-    return this.partnerService.findByName(name);
-  }
+	@Get('/search')
+	async partnersByName(@Query('name') name: string, @Query('disabled') disabled: boolean) {
+		if (name === null || name === undefined) {
+			return this.partnerService.findAll(disabled);
+		}
 
-  @Get(':id')
-  async partnerById(@Param('id') id: string) {
-    const partnerFound = await this.partnerService.findById(id);
+		return this.partnerService.findByName(name, disabled);
+	}
 
-    if (partnerFound === null) {
-      throw new NotFoundException('Parceria não encontrada.');
-    }
+	@Get(':id')
+	async partnerById(@Param('id') id: string) {
+		const partnerFound = await this.partnerService.findById(id);
 
-    return this.partnerService.findById(id);
-  }
+		if (partnerFound === null) {
+			throw new NotFoundException('Parceria não encontrada.');
+		}
 
-  @Get()
-  async partners() {
-    return this.partnerService.findAll();
-  }
+		return this.partnerService.findById(id);
+	}
 
-  @Put('/:id')
-  async updatePartner(
-    @Param('id') id: string,
-    @Body() dataToUpdate: UpdatePartnerDTO,
-  ) {
-    const partnerFound = await this.partnerService.findById(id);
+	@Get()
+	async partners() {
+		return this.partnerService.findAll();
+	}
 
-    if (partnerFound === null) {
-      throw new NotFoundException('Parceria não encontrada.');
-    }
+	@Put('/:id')
+	async updatePartner(@Param('id') id: string, @Body() dataToUpdate: UpdatePartnerDTO) {
+		const partnerFound = await this.partnerService.findById(id);
 
-    const partnerUpdated = await this.partnerService.update(id, dataToUpdate);
-    return {
-      partner: partnerUpdated,
-      message: 'Dados da Parceria Atualizado com sucesso.',
-    };
-  }
+		if (partnerFound === null) {
+			throw new NotFoundException('Parceria não encontrada.');
+		}
 
-  @Delete('/:id')
-  async disablePartner(@Param('id') id: string) {
-    const partnerFound = await this.partnerService.findById(id);
+		const partnerUpdated = await this.partnerService.update(id, dataToUpdate);
+		return {
+			partner: partnerUpdated,
+			message: 'Dados da Parceria Atualizado com sucesso.',
+		};
+	}
 
-    if (partnerFound === null) {
-      throw new NotFoundException('Parceria não encontrada.');
-    }
+	@Delete('/:id')
+	async disablePartner(@Param('id') id: string) {
+		const partnerFound = await this.partnerService.findById(id);
 
-    await this.partnerService.disable(id);
+		if (partnerFound === null) {
+			throw new NotFoundException('Parceria não encontrada.');
+		}
 
-    return { message: 'Parceria desativada com sucesso.' };
-  }
+		await this.partnerService.disable(id);
+
+		return { message: 'Parceria desativada com sucesso.' };
+	}
 }

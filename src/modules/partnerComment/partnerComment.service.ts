@@ -16,11 +16,11 @@ export class PartnerCommentService {
   async listCommentsByPartner(id: string) {
     return await this.prismaService.partnerComment.findMany({
       where: {
-        id: id
+        partnerId: id
       },
       orderBy: {
-        // createdAt: 'desc',
-        updatedAt: 'desc'
+        // createdAt: 'asc',
+        updatedAt: 'asc'
       },
     })
   }

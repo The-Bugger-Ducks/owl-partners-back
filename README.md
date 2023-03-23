@@ -10,10 +10,10 @@ As seguintes tecnologias e ferramentas foram utilizadas neste projeto: `Typescri
 
 ### :gear: Como utilizar
 
-Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link: [mogenius](https://owl-partners-b-prod-fatec-vg4k4y.mo4.mogenius.io/users)).
+Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link:).
 
 - Tutorial para rodar o projeto
-
+s
 ```bash
 # Baixe este repositório ou clone pelo Git usando o comando:
 $ git clone https://github.com/The-Bugger-Ducks/owl-partners-back.git
@@ -44,7 +44,7 @@ O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Ins
 
 ## :railway_track: Rotas disponíveis
 <div align="center">
-  
+
 |                                                                    Tipo | Rota                               | Ação                                |
 | ----------------------------------------------------------------------: | :--------------------------------- | :---------------------------------- |
 |   <hr>                                                                  | <hr>                               | **Controle de usuários**            |

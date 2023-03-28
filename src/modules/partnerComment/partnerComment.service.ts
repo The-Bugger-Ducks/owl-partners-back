@@ -8,7 +8,7 @@ export class PartnerCommentService {
 	constructor(private readonly prismaService: PrismaService) { }
 
 	async addComment(comment: CreateCommentDTO) {
-		comment.userId = '0c532a78-5e22-4f39-9a00-ec4a008322e7'
+		comment.userId = '06c8112a-47f7-4cf5-8f7a-484aeca53076'
 
 		return await this.prismaService.partnerComment.create({
 			data: comment

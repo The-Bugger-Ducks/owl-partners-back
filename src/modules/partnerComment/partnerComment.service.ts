@@ -20,6 +20,8 @@ export class PartnerCommentService {
 			where: {
 				partnerId: id
 			},
+			include: { User: true },
+
 			orderBy: {
 				// createdAt: 'asc',
 				updatedAt: 'asc'

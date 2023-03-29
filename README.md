@@ -40,7 +40,9 @@ $ yarn start
 $ npm run start
 ```
 
-O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Insomnia ou postman para simular requisições e respostas das rotas (pelo link [https://localhost:3000](https://localhost:3000)) ou utilize o projeto de aplicativo mobile do "OwlPartners" para executar as funcionalidades da aplicação (acesse o repositório por [este link](https://github.com/The-Bugger-Ducks/owl-partners-mobile)) ou o projeto front-end WEB [neste link](https://github.com/The-Bugger-Ducks/owl-partners-web) .
+O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Insomnia ou postman para simular requisições e respostas das rotas (pelo link [https://localhost:3000](https://localhost:3000)) ou utilize o projeto de aplicativo mobile do "OwlPartners" para executar as funcionalidades da aplicação (acesse o repositório por [este link](https://github.com/The-Bugger-Ducks/owl-partners-mobile)) ou o projeto front-end WEB [neste link](https://github.com/The-Bugger-Ducks/owl-partners-web).
+
+Caso queira usar o Insomnia para testar as rotas, use o arquivo Insomnia_2023_mm_dd.json para importar as requisições.
 
 ## :railway_track: Rotas disponíveis
 Para acessar as rotas disponiveis acesse o link para o [https://owlpartners.onrender.com/api](Swagger) na nuvem ou para o [http://localhost:3000](SwagerLocalhost)
@@ -95,5 +97,6 @@ Para acessar as rotas disponiveis acesse o link para o [https://owlpartners.onre
 | :page_facing_up: docker-compose.yml               | Arquivo usado para "conteinerizar" um banco postgres local                                 |
 | :page_facing_up: Dockerfile                       | Arquivo usado para integração contínua de deploy em um servidor                            |
 | :page_facing_up: jest.config.json                 | Arquivo usado para configurar a biblioteca JEST para execução dos testes                   |
+| :page_facing_up: insomnia_2023_mm_dd.json         | Arquivo usado para importar requisições para as rotas do projeto no Insomnia               |
 | :page_facing_up: tsconfig.json                    | Arquivo usado para configurar o typescript como sintaxe, organização de arquivos, etc.     |
 | :page_facing_up: package.json                     | Arquivo usado gerenciar as dependencias do projeto com o Yarn e compor scripts de terminal |

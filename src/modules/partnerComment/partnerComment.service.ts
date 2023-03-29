@@ -9,6 +9,7 @@ export class PartnerCommentService {
 
 	async addComment(comment: CreateCommentDTO) {
 		comment.userId = '06c8112a-47f7-4cf5-8f7a-484aeca53076'
+		// comment.userId = 'e9373102-350c-4a58-9515-d98221c1548b'
 
 		return await this.prismaService.partnerComment.create({
 			data: comment
@@ -20,11 +21,24 @@ export class PartnerCommentService {
 			where: {
 				partnerId: id
 			},
-			include: { User: true },
-
+			select: {
+				id: true,
+				partnerId: true,
+				userId: true,
+				comment: true,
+				createdAt: true,
+				updatedAt: true,
+				User: {
+					select: {
+						name: true,
+						lastName: true,
+						email: true
+					}
+				}
+			},
 			orderBy: {
 				// createdAt: 'asc',
-				updatedAt: 'asc'
+				updatedAt: 'desc'
 			},
 		})
 	}

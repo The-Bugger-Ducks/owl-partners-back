@@ -13,7 +13,7 @@ export class CreateCommentDTO {
 	@ApiProperty()
 	userId: string
 
-	@IsNotEmpty({ message: 'O id do usuário(userID) precisa ser fornecido' })
+	@IsNotEmpty({ message: 'O comentário sobre a parceria(comment) precisa ser fornecido' })
 	@ApiProperty()
 	comment: string
 }

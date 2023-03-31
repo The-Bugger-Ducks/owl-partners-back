@@ -13,12 +13,7 @@ export class CreateCommentDTO {
 	@ApiProperty()
 	userId: string
 
-	@IsNotEmpty({ message: 'O id do usuário(userID) precisa ser fornecido' })
+	@IsNotEmpty({ message: 'O comentário sobre a parceria(comment) precisa ser fornecido' })
 	@ApiProperty()
 	comment: string
-
-	@IsNotEmpty({ message: 'O tipo do comentário(commentType) deve ser fornecido.' })
-	@IsEnum(CommentType, { message: "O tipo do comentario(commentType) deve ser 'ATUALIZACAO' ou 'ANOTACAO'." })
-	@ApiProperty()
-	commentType: CommentType
 }

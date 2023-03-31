@@ -10,7 +10,7 @@ As seguintes tecnologias e ferramentas foram utilizadas neste projeto: `Typescri
 
 ### :gear: Como utilizar
 
-Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link:).
+Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link: [owlPartnersAPI](https://owlpartners.onrender.com)).
 
 - Tutorial para rodar o projeto
 s
@@ -40,9 +40,13 @@ $ yarn start
 $ npm run start
 ```
 
-O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Insomnia ou postman para simular requisições e respostas das rotas (pelo link [https://localhost:3000](https://localhost:3000)) ou utilize o projeto de aplicativo mobile do "OwlPartners" para executar as funcionalidades da aplicação (acesse o repositório por [este link](https://github.com/The-Bugger-Ducks/owl-partners-mobile)) ou o projeto front-end WEB [neste link](https://github.com/The-Bugger-Ducks/owl-partners-web) .
+O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Insomnia ou postman para simular requisições e respostas das rotas (pelo link [https://localhost:3000](https://localhost:3000)) ou utilize o projeto de aplicativo mobile do "OwlPartners" para executar as funcionalidades da aplicação (acesse o repositório por [este link](https://github.com/The-Bugger-Ducks/owl-partners-mobile)) ou o projeto front-end WEB [neste link](https://github.com/The-Bugger-Ducks/owl-partners-web).
+
+Caso queira usar o Insomnia para testar as rotas, use o arquivo Insomnia_2023_mm_dd.json para importar as requisições.
 
 ## :railway_track: Rotas disponíveis
+Para acessar as rotas disponiveis acesse o link para o [https://owlpartners.onrender.com/api](Swagger) na nuvem ou para o [http://localhost:3000](SwagerLocalhost)
+
 <div align="center">
 
 |                                                                    Tipo | Rota                               | Ação                                |
@@ -50,8 +54,8 @@ O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Ins
 |   <hr>                                                                  | <hr>                               | **Controle de usuários**            |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/users/`                          | Cadastro de usuários                |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/`                          | Listagem de usuários                |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/{userId}`                  | Dados de um usuário específico      |
-|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/{userId}`                  | Atualização de um usuário específico|
+<!-- |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/{userId}`                  | Dados de um usuário específico      | -->
+<!-- |    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/{userId}`                  | Atualização de um usuário específico| -->
 | [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/users/{userId}`                  | Exclusão de um usuário específico   |
 |   <hr>                                                                  | <hr>                               | **Controle de parcerias**           |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/partners/`                       | Criação de parceria                 |
@@ -62,8 +66,10 @@ O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Ins
 | [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/partners/{partnerId}`         | Desativação de uma parceria específica |
 |   <hr>                                                                  | <hr>                         | **Controle de anotações sobre parcerias** |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/partners/comment`                | Cadastrar anotação sobre a parceria |
-|   [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]()  | `/partners/comment/`             | Visualizar anotações sobre a parceria |
-|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/partners/comment/:id`            | Atualizar anotação sobre a parceria |
+|   [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]()  | `/partners/comment/:commentId`   | Visualizar anotações sobre a parceria |
+|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/partners/comment/:commentId`     | Atualizar anotação sobre a parceria |
+|   <hr>                                                                  | <hr>                         			 | **Autenticação de usuários**        |
+|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/auth/login`               	 | Autenticaçãr usuários com email e senha |
 
 </div>
 
@@ -91,5 +97,6 @@ O servidor inciará localmente na porta 3000 (citada no arquivo .env). Use o Ins
 | :page_facing_up: docker-compose.yml               | Arquivo usado para "conteinerizar" um banco postgres local                                 |
 | :page_facing_up: Dockerfile                       | Arquivo usado para integração contínua de deploy em um servidor                            |
 | :page_facing_up: jest.config.json                 | Arquivo usado para configurar a biblioteca JEST para execução dos testes                   |
+| :page_facing_up: insomnia_2023_mm_dd.json         | Arquivo usado para importar requisições para as rotas do projeto no Insomnia               |
 | :page_facing_up: tsconfig.json                    | Arquivo usado para configurar o typescript como sintaxe, organização de arquivos, etc.     |
 | :page_facing_up: package.json                     | Arquivo usado gerenciar as dependencias do projeto com o Yarn e compor scripts de terminal |

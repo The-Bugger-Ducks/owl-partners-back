@@ -13,7 +13,7 @@ As seguintes tecnologias e ferramentas foram utilizadas neste projeto: `Typescri
 Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link: [owlPartnersAPI](https://owlpartners.onrender.com)).
 
 - Tutorial para rodar o projeto
-s
+
 ```bash
 # Baixe este repositório ou clone pelo Git usando o comando:
 $ git clone https://github.com/The-Bugger-Ducks/owl-partners-back.git
@@ -32,7 +32,7 @@ $ npm install
 $ docker-compose up -d
 
 # Utilize o comando do Prisma para sincronizar a estrutura do banco de dados
-$ npx prisma db push
+$ npx prisma migrate deploy
 
 # Inicie o Projeto
 $ yarn start
@@ -50,12 +50,10 @@ Para acessar as rotas disponiveis acesse o link para o [https://owlpartners.onre
 <div align="center">
 
 |                                                                    Tipo | Rota                               | Ação                                |
-| ----------------------------------------------------------------------: | :--------------------------------- | :---------------------------------- |
+| :---------------------------------------------------------------------- | :--------------------------------- | :---------------------------------- |
 |   <hr>                                                                  | <hr>                               | **Controle de usuários**            |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/users/`                          | Cadastro de usuários                |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/`                          | Listagem de usuários                |
-<!-- |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/{userId}`                  | Dados de um usuário específico      | -->
-<!-- |    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/{userId}`                  | Atualização de um usuário específico| -->
 | [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/users/{userId}`                  | Exclusão de um usuário específico   |
 |   <hr>                                                                  | <hr>                               | **Controle de parcerias**           |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/partners/`                       | Criação de parceria                 |

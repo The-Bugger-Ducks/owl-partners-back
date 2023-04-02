@@ -1,11 +1,9 @@
-import { Body, Controller, Delete, Get, InternalServerErrorException, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
-import { v4 as uuid } from 'uuid';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/createUser.dto";
-import { ListUsersDTO } from "./dto/ListUsers.dto";
-import { UpdateUserDTO } from "./dto/updateUser.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
+import { UpdateUserDTO } from "./dto/updateUser.dto";
 
 @Controller('/users')
 @ApiTags('users')
@@ -19,7 +17,7 @@ export class UserController {
 	}
 
 	@Get()
-	// @UseGuards(AuthGuard('jwt'))
+	@UseGuards(AuthGuard('jwt'))
 	async index() {
 		const users = this.userService.findAll();
 		return users;
@@ -36,7 +34,7 @@ export class UserController {
 	// }
 
 	@Delete('/:id')
-	// @UseGuards(AuthGuard('jwt'))
+	@UseGuards(AuthGuard('jwt'))
 	async deleteUser(@Param('id') id: string) {
 		const userFound = await this.userService.findById(id);
 		if (userFound === null) throw new NotFoundException('Usuário não encontrado.')

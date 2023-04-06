@@ -19,7 +19,8 @@ model User {
   createdAt DateTime @default(now())
   role      UserRole @default(SIMPLE)
 
-  comments PartnerComment[]
+  comments        PartnerComment[]
+  meettingComents MeetingComment[]
 
   @@map("users")
 }
@@ -33,7 +34,7 @@ model Partner {
   id String @id @default(uuid())
 
   name        String
-  email       String? @unique
+  email       String?
   phoneNumber String?
 
   zipCode      String?
@@ -46,11 +47,13 @@ model Partner {
   status         PartnerStatus          @default(EmProspeccao)
   memberNumber   Int?
 
-  createdAt DateTime @default(now())
-
   comments PartnerComment[]
 
   disabled Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  meetings Meeting[]
 
   @@map("partners")
 }
@@ -80,10 +83,10 @@ enum PartnerStatus {
 model PartnerComment {
   id String @id @default(uuid())
 
-  Partner   Partner? @relation(fields: [partnerId], references: [id])
-  partnerId String?
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  Partner   Partner @relation(fields: [partnerId], references: [id])
+  partnerId String
+  User      User    @relation(fields: [userId], references: [id])
+  userId    String
 
   comment String
 
@@ -91,4 +94,38 @@ model PartnerComment {
   updatedAt DateTime @updatedAt
 
   @@map("partner_comments")
+}
+
+model Meeting {
+  id String @id @default(uuid())
+
+  Partner   Partner @relation(fields: [partnerId], references: [id])
+  partnerId String
+
+  meetingComments MeetingComment[]
+
+  title           String
+  description     String?
+  meetingDateTime DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("meeting")
+}
+
+model MeetingComment {
+  id String @id @default(uuid())
+
+  Meeting   Meeting @relation(fields: [meetingId], references: [id])
+  meetingId String
+  User      User    @relation(fields: [userId], references: [id])
+  userId    String
+
+  comment String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("meeting_comments")
 }

@@ -20,6 +20,17 @@ export class MeetingService {
 			orderBy: {
 				createdAt: 'asc',
 			},
+			include: {
+				Partner: {
+					select: {
+						id: true,
+						name: true,
+						email: true,
+						phoneNumber: true,
+						status: true
+					}
+				}
+			}
 		});
 	}
 
@@ -29,6 +40,17 @@ export class MeetingService {
 			where: {
 				id,
 			},
+			include: {
+				Partner: {
+					select: {
+						id: true,
+						name: true,
+						email: true,
+						phoneNumber: true,
+						status: true
+					}
+				}
+			}
 		});
 	}
 

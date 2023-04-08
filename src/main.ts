@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as momentTimezone from 'moment-timezone';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+	// momentTimezone.tz.setDefault('UTC');
+
 	app.useGlobalPipes(
 		new ValidationPipe({
 			transform: true,

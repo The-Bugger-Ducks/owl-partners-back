@@ -4,6 +4,7 @@ import { PrismaService } from 'src/database/prisma/prisma.service';
 
 import { UpdateMeetingDTO } from './dto/updateMeeting.dto';
 import { CreateMeetingDTO } from './dto/createMeeting.dto';
+import { getCurrentBrTimezone } from 'src/utils/getCurrentBrTimezone';
 
 @Injectable()
 export class MeetingService {
@@ -38,9 +39,13 @@ export class MeetingService {
 	async findById(id: string) {
 		return this.prismaService.meeting.findFirstOrThrow({
 			where: {
-				id,
+				id
 			},
-			include: {
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				meetingDateTime: true,
 				Partner: {
 					select: {
 						id: true,
@@ -50,19 +55,44 @@ export class MeetingService {
 						status: true
 					}
 				}
-			}
+			},
 		});
 	}
 
 	async findByPartnerId(id: string) {
-		return this.prismaService.meeting.findMany({
+		const upcomingMeetings = await this.prismaService.meeting.findMany({
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				meetingDateTime: true,
+			},
 			where: {
+				meetingDateTime: {
+					gt: getCurrentBrTimezone()
+				},
 				partnerId: id
 			},
-			orderBy: {
-				meetingDateTime: 'asc'
-			}
+			orderBy: { meetingDateTime: 'asc' }
 		});
+
+		const pastMeetings = await this.prismaService.meeting.findMany({
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				meetingDateTime: true,
+			},
+			where: {
+				meetingDateTime: {
+					lt: getCurrentBrTimezone()
+				},
+				partnerId: id
+			},
+			orderBy: { meetingDateTime: 'asc' }
+		});
+
+		return { upcomingMeetings, pastMeetings }
 	}
 
 	update(id: string, meeting: UpdateMeetingDTO) {

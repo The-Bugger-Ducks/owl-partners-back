@@ -17,22 +17,49 @@ export class MeetingService {
 	}
 
 	async findAll() {
-		return this.prismaService.meeting.findMany({
-			orderBy: {
-				createdAt: 'asc',
-			},
-			include: {
+		const upcomingMeetings = await this.prismaService.meeting.findMany({
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				meetingDateTime: true,
 				Partner: {
 					select: {
 						id: true,
 						name: true,
-						email: true,
-						phoneNumber: true,
-						status: true
 					}
 				}
-			}
+			},
+			where: {
+				meetingDateTime: {
+					gt: getCurrentBrDateTimeISO()
+				}
+			},
+			orderBy: { meetingDateTime: 'asc' }
 		});
+
+		const pastMeetings = await this.prismaService.meeting.findMany({
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				meetingDateTime: true,
+				Partner: {
+					select: {
+						id: true,
+						name: true,
+					}
+				}
+			},
+			where: {
+				meetingDateTime: {
+					lt: getCurrentBrDateTimeISO()
+				}
+			},
+			orderBy: { meetingDateTime: 'asc' }
+		});
+
+		return { upcomingMeetings, pastMeetings }
 	}
 
 

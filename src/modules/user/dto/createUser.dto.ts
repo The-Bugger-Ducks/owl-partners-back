@@ -4,11 +4,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { RoleEnum } from "../enums/role.enum";
 
 export class CreateUserDTO {
-	@IsNotEmpty({ message: 'O nome não pode ser vazio.' })
+	@IsNotEmpty({ message: 'O nome (name) não pode ser vazio.' })
 	@ApiProperty()
 	name: string;
 
-	@IsNotEmpty({ message: 'O nome não pode ser vazio.' })
+	@IsNotEmpty({ message: 'O Sobrenome (lastName) não pode ser vazio.' })
 	@ApiProperty()
 	lastName: string;
 

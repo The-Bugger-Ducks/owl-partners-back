@@ -7,7 +7,7 @@ import * as momentTimezone from 'moment-timezone';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-	// momentTimezone.tz.setDefault('UTC');
+	// momentTimezone.tz.setDefault('America/Sao_Paulo');
 
 	app.useGlobalPipes(
 		new ValidationPipe({

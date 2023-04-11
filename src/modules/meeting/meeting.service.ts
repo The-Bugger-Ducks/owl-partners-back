@@ -4,7 +4,7 @@ import { PrismaService } from 'src/database/prisma/prisma.service';
 
 import { UpdateMeetingDTO } from './dto/updateMeeting.dto';
 import { CreateMeetingDTO } from './dto/createMeeting.dto';
-import { getCurrentBrTimezone } from 'src/utils/getCurrentBrTimezone';
+import { getCurrentBrDateTimeISO } from 'src/utils/getCurrentBrDateTimeISO';
 
 @Injectable()
 export class MeetingService {
@@ -66,10 +66,11 @@ export class MeetingService {
 				title: true,
 				description: true,
 				meetingDateTime: true,
+				meetingComments: true
 			},
 			where: {
 				meetingDateTime: {
-					gt: getCurrentBrTimezone()
+					gt: getCurrentBrDateTimeISO()
 				},
 				partnerId: id
 			},
@@ -82,10 +83,11 @@ export class MeetingService {
 				title: true,
 				description: true,
 				meetingDateTime: true,
+				meetingComments: true
 			},
 			where: {
 				meetingDateTime: {
-					lt: getCurrentBrTimezone()
+					lt: getCurrentBrDateTimeISO()
 				},
 				partnerId: id
 			},

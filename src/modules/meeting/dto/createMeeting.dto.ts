@@ -17,6 +17,6 @@ export class CreateMeetingDTO {
 	description: string;
 
 	@IsNotEmpty({ message: 'A data e hora(meetingDateTime) da reunião precisa ser informada' })
-	@IsDateString()
+	// @IsDateString()
 	meetingDateTime: Date
 }

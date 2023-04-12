@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -12,7 +12,7 @@ export class CreateMeetingDTO {
 	@ApiProperty()
 	partnerId: string;
 
-	@IsNotEmpty({ message: 'A descrição(description) da reunião precisa ser informada' })
+	@IsOptional()
 	@ApiProperty()
 	description: string;
 

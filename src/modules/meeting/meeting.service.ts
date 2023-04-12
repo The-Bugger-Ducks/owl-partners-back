@@ -64,7 +64,7 @@ export class MeetingService {
 
 
 	async findById(id: string) {
-		return this.prismaService.meeting.findFirstOrThrow({
+		return this.prismaService.meeting.findUnique({
 			where: {
 				id
 			},

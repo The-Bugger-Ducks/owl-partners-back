@@ -81,7 +81,8 @@ export class MeetingService {
 						phoneNumber: true,
 						status: true
 					}
-				}
+				},
+				meetingComments: true,
 			},
 		});
 	}

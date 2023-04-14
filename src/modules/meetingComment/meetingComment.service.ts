@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 
 import { CreateMeetingCommentDTO } from './dto/createMeetingComment.dto';
+import { UpdateMeetingCommentDTO } from './dto/updateMeetingComment.dto';
 
 @Injectable()
 export class MeetingCommentService {
@@ -35,18 +36,32 @@ export class MeetingCommentService {
 				},
 			},
 			orderBy: {
-				// createdAt: 'asc',
 				updatedAt: 'desc',
 			},
 		});
 	}
 
-	// update(id: string, comment: UpdateCommentDTO) {
-	// 	return this.prismaService.partnerComment.update({
-	// 		data: comment,
-	// 		where: {
-	// 			id,
-	// 		},
-	// 	});
-	// }
+	async findById(id: string) {
+		return this.prismaService.meetingComment.findFirst({
+			where: {
+				id,
+			},
+			select: {
+				User: {
+					select: {
+						id: true,
+					},
+				},
+			},
+		});
+	}
+
+	async update(id: string, comment: UpdateMeetingCommentDTO) {
+		return this.prismaService.meetingComment.update({
+			data: comment,
+			where: {
+				id,
+			},
+		});
+	}
 }

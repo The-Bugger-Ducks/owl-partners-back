@@ -3,7 +3,7 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMeetingCommentDTO {
-	@IsNotEmpty({ message: 'O título(title) da reunião precisa ser informado' })
+	@IsNotEmpty({ message: 'O comentário(comment) da reunião precisa ser informado' })
 	@ApiProperty()
 	comment: string;
 

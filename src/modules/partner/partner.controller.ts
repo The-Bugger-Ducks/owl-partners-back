@@ -42,7 +42,7 @@ export class PartnerController {
 		return this.partnerService.findAll();
 	}
 
-	@Get('annotations/:id')
+	@Get(':id/annotations')
 	@UseGuards(AuthGuard('jwt'))
 	async listMergedComments(@Param('id') id: string) {
 		const partnerFound = await this.partnerService.findById(id);

@@ -48,9 +48,6 @@ export class PartnerService {
 
 
 	async listMergedComments(id: string) {
-		const partner = await this.prismaService.partner.findUnique({ where: { id } });
-		if (!partner) return null
-
 		const partnerComments = await this.prismaService.partnerComment.findMany({
 			select: {
 				id: true,
@@ -88,13 +85,11 @@ export class PartnerService {
 		let annotations = [...meetingComments, ...partnerComments];
 
 		// ordem do mais recente para o mais antigo
-		annotations.sort((a, b) => {
+		return annotations.sort((a, b) => {
 			if (a.createdAt > b.createdAt) return -1;
 			if (a.createdAt < b.createdAt) return 1;
 			return 0;
 		});
-
-		return { partner, annotations }
 	}
 
 

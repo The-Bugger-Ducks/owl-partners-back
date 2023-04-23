@@ -31,10 +31,7 @@ export class PartnerController {
 	@UseGuards(AuthGuard('jwt'))
 	async partnerById(@Param('id') id: string) {
 		const partnerFound = await this.partnerService.findById(id);
-
-		if (partnerFound === null) {
-			throw new NotFoundException('Parceria não encontrada.');
-		}
+		if (partnerFound === null) throw new NotFoundException('Parceria não encontrada.');
 
 		return this.partnerService.findById(id);
 	}
@@ -43,6 +40,16 @@ export class PartnerController {
 	@UseGuards(AuthGuard('jwt'))
 	async partners() {
 		return this.partnerService.findAll();
+	}
+
+	@Get(':partnerId/annotationsHistory')
+	@UseGuards(AuthGuard('jwt'))
+	@ApiTags('History')
+	async listMergedComments(@Param('partnerId') partnerId: string) {
+		const partnerFound = await this.partnerService.findById(partnerId);
+		if (partnerFound === null) throw new NotFoundException('Parceria não encontrada.');
+
+		return this.partnerService.listMergedComments(partnerId);
 	}
 
 	@Put('/:id')

@@ -117,7 +117,7 @@ model Meeting {
 model MeetingComment {
   id String @id @default(uuid())
 
-  Meeting   Meeting @relation(fields: [meetingId], references: [id])
+  Meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
   meetingId String
   User      User    @relation(fields: [userId], references: [id])
   userId    String

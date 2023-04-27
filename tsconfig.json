@@ -20,6 +20,6 @@
 		"forceConsistentCasingInFileNames": false,
 		"noFallthroughCasesInSwitch": false,
 		"strictPropertyInitialization": false,
-		"baseUrl": "."
+		// "baseUrl": "."
 	}
 }

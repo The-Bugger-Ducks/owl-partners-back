@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from 'src/database/prisma/prisma.service';
+import { PrismaService } from '../../database';
 
 import { CreateMeetingCommentDTO } from './dto/createMeetingComment.dto';
 import { UpdateMeetingCommentDTO } from './dto/updateMeetingComment.dto';
 
 @Injectable()
 export class MeetingCommentService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(private readonly prismaService: PrismaService) { }
 
 	async create(comment: CreateMeetingCommentDTO) {
 		return this.prismaService.meetingComment.create({

@@ -23,15 +23,15 @@ export class UserController {
 		return users;
 	}
 
-	// @Put('/:id')
-	// @UseGuards(AuthGuard('jwt'))
-	// async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {
-	//   const userUpdated = await this.userService.update(id, dataToUpdate);
-	//   return {
-	//     user: userUpdated,
-	//     message: 'Usuário Atualizado com sucesso.'
-	//   }
-	// }
+	@Put('/:id')
+	@UseGuards(AuthGuard('jwt'))
+	async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {
+		const userUpdated = await this.userService.update(dataToUpdate, id);
+		return {
+			user: userUpdated,
+			message: 'Usuário Atualizado com sucesso.'
+		}
+	}
 
 	@Delete('/:id')
 	@UseGuards(AuthGuard('jwt'))

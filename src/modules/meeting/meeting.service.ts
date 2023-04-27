@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from 'src/database/prisma/prisma.service';
+import { PrismaService } from '../../database';
 
 import { UpdateMeetingDTO } from './dto/updateMeeting.dto';
 import { CreateMeetingDTO } from './dto/createMeeting.dto';
-import { getCurrentBrDateTimeISO } from 'src/utils/getCurrentBrDateTimeISO';
+import { getCurrentBrDateTimeISO } from '../../utils/getCurrentBrDateTimeISO';
 
 @Injectable()
 export class MeetingService {

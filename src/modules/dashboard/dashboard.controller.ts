@@ -12,7 +12,6 @@ export class DashboardController {
 	@Get()
 	@UseGuards(AuthGuard('jwt'))
 	async index() {
-		const users = this.dashboardService.dashboard();
-		return users;
+		return await this.dashboardService.dashboard();
 	}
 }

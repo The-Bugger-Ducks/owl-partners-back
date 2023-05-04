@@ -44,12 +44,7 @@ export class MeetingService {
 				title: true,
 				description: true,
 				meetingDateTime: true,
-				Partner: {
-					select: {
-						id: true,
-						name: true,
-					}
-				}
+				Partner: true
 			},
 			where: {
 				meetingDateTime: {
@@ -73,15 +68,7 @@ export class MeetingService {
 				title: true,
 				description: true,
 				meetingDateTime: true,
-				Partner: {
-					select: {
-						id: true,
-						name: true,
-						email: true,
-						phoneNumber: true,
-						status: true
-					}
-				},
+				Partner: true,
 				meetingComments: true,
 			},
 		});

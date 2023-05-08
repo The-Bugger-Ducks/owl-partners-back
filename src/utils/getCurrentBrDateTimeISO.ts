@@ -6,8 +6,6 @@ export function getCurrentBrDateTimeISO(): string {
 	const localDate = new Date(localTimestamp)
 	const formattedDate = localDate.toISOString()
 
-	console.log(formattedDate);
-
 	return formattedDate
 }
 

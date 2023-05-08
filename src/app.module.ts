@@ -6,10 +6,19 @@ import { PartnerCommentModule } from './modules/partnerComment/partnerComment.mo
 import { AuthModule } from './modules/auth/auth.module';
 import { MeetingModule } from './modules/meeting/meeting.module';
 import { MeetingCommentModule } from './modules/meetingComment/meetingComment.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
-	imports: [UserModule, PartnerModule, PartnerCommentModule, MeetingModule, MeetingCommentModule, AuthModule],
+	imports: [
+		UserModule,
+		PartnerModule,
+		PartnerCommentModule,
+		MeetingModule,
+		MeetingCommentModule,
+		DashboardModule,
+		AuthModule
+	],
 	controllers: [],
 	providers: [],
 })
-export class AppModule {}
+export class AppModule { }

@@ -33,10 +33,10 @@ export class MeetingService {
 			},
 			where: {
 				meetingDateTime: {
-					gt: getCurrentBrDateTimeISO()
-				}
+					gt: getCurrentBrDateTimeISO(),
+				},
 			},
-			orderBy: { meetingDateTime: 'asc' }
+			orderBy: { meetingDateTime: 'asc' },
 		});
 
 		const pastMeetings = await this.prismaService.meeting.findMany({
@@ -45,24 +45,23 @@ export class MeetingService {
 				title: true,
 				description: true,
 				meetingDateTime: true,
-				Partner: true
+				Partner: true,
 			},
 			where: {
 				meetingDateTime: {
-					lt: getCurrentBrDateTimeISO()
-				}
+					lt: getCurrentBrDateTimeISO(),
+				},
 			},
-			orderBy: { meetingDateTime: 'asc' }
+			orderBy: { meetingDateTime: 'asc' },
 		});
 
-		return { upcomingMeetings, pastMeetings }
+		return { upcomingMeetings, pastMeetings };
 	}
-
 
 	async findById(id: string) {
 		return this.prismaService.meeting.findUnique({
 			where: {
-				id
+				id,
 			},
 			select: {
 				id: true,
@@ -82,15 +81,15 @@ export class MeetingService {
 				title: true,
 				description: true,
 				meetingDateTime: true,
-				meetingComments: true
+				meetingComments: true,
 			},
 			where: {
 				meetingDateTime: {
-					gt: getCurrentBrDateTimeISO()
+					gt: getCurrentBrDateTimeISO(),
 				},
-				partnerId: id
+				partnerId: id,
 			},
-			orderBy: { meetingDateTime: 'asc' }
+			orderBy: { meetingDateTime: 'asc' },
 		});
 
 		const pastMeetings = await this.prismaService.meeting.findMany({
@@ -99,18 +98,18 @@ export class MeetingService {
 				title: true,
 				description: true,
 				meetingDateTime: true,
-				meetingComments: true
+				meetingComments: true,
 			},
 			where: {
 				meetingDateTime: {
-					lt: getCurrentBrDateTimeISO()
+					lt: getCurrentBrDateTimeISO(),
 				},
-				partnerId: id
+				partnerId: id,
 			},
-			orderBy: { meetingDateTime: 'asc' }
+			orderBy: { meetingDateTime: 'asc' },
 		});
 
-		return { upcomingMeetings, pastMeetings }
+		return { upcomingMeetings, pastMeetings };
 	}
 
 	update(id: string, meeting: UpdateMeetingDTO) {
@@ -126,6 +125,17 @@ export class MeetingService {
 		return this.prismaService.meeting.delete({
 			where: {
 				id: id,
+			},
+		});
+	}
+
+	deleteUpcomingMeetingsByPartnerId(partnerId: string) {
+		return this.prismaService.meeting.deleteMany({
+			where: {
+				partnerId: partnerId,
+				meetingDateTime: {
+					gt: getCurrentBrDateTimeISO(),
+				},
 			},
 		});
 	}

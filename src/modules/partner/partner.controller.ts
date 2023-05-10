@@ -9,7 +9,7 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller('/partners')
 @ApiTags('partner')
 export class PartnerController {
-	constructor(private partnerService: PartnerService) { }
+	constructor(private partnerService: PartnerService) {}
 
 	@Post()
 	@UseGuards(AuthGuard('jwt'))
@@ -77,6 +77,7 @@ export class PartnerController {
 			throw new NotFoundException('Parceria não encontrada.');
 		}
 
+		await this.partnerService.deleteUpcomingMeetings(id);
 		await this.partnerService.disable(id);
 
 		return { message: 'Parceria desativada com sucesso.' };

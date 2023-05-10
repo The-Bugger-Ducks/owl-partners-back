@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from 'src/database/prisma/prisma.service';
+import { MeetingService } from '../meeting/meeting.service';
 
 import { CreatePartnerDTO } from './dto/createPartner.dto';
 import { UpdatePartnerDTO } from './dto/updatePartner.dto';
-import { User } from '@prisma/client';
 
 @Injectable()
 export class PartnerService {
-	constructor(private readonly prismaService: PrismaService) { }
+	constructor(private readonly prismaService: PrismaService, private meetingService: MeetingService) {}
 
 	async create(partner: CreatePartnerDTO) {
 		return this.prismaService.partner.create({
 			data: partner,
 		});
 	}
-
 
 	async findAll(disabled?: boolean) {
 		return this.prismaService.partner.findMany({
@@ -27,7 +26,6 @@ export class PartnerService {
 			},
 		});
 	}
-
 
 	async findByName(name: string, disabled?: boolean) {
 		return this.prismaService.partner.findMany({
@@ -41,11 +39,9 @@ export class PartnerService {
 		});
 	}
 
-
 	async findById(id: string) {
 		return await this.prismaService.partner.findFirst({ where: { id } });
 	}
-
 
 	async listMergedComments(id: string) {
 		const partnerComments = await this.prismaService.partnerComment.findMany({
@@ -57,7 +53,7 @@ export class PartnerService {
 				User: true,
 			},
 			where: { partnerId: id },
-			orderBy: { updatedAt: 'desc' }
+			orderBy: { updatedAt: 'desc' },
 		});
 
 		const meetingComments = await this.prismaService.meetingComment.findMany({
@@ -65,8 +61,8 @@ export class PartnerService {
 				id: true,
 				Meeting: {
 					select: {
-						title: true
-					}
+						title: true,
+					},
 				},
 				comment: true,
 				createdAt: true,
@@ -75,14 +71,13 @@ export class PartnerService {
 			},
 			where: {
 				Meeting: {
-					partnerId: id
-				}
+					partnerId: id,
+				},
 			},
-			orderBy: { updatedAt: 'desc' }
-		})
+			orderBy: { updatedAt: 'desc' },
+		});
 
-
-		let annotations = [...meetingComments, ...partnerComments];
+		const annotations = [...meetingComments, ...partnerComments];
 
 		// ordem do mais recente para o mais antigo
 		return annotations.sort((a, b) => {
@@ -91,7 +86,6 @@ export class PartnerService {
 			return 0;
 		});
 	}
-
 
 	update(id: string, partner: UpdatePartnerDTO) {
 		return this.prismaService.partner.update({
@@ -102,7 +96,6 @@ export class PartnerService {
 		});
 	}
 
-
 	disable(id: string) {
 		return this.prismaService.partner.update({
 			data: {
@@ -112,5 +105,9 @@ export class PartnerService {
 				id: id,
 			},
 		});
+	}
+
+	deleteUpcomingMeetings(id: string) {
+		return this.meetingService.deleteUpcomingMeetingsByPartnerId(id);
 	}
 }

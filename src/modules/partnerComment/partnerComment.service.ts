@@ -2,14 +2,18 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/database";
 import { CreateCommentDTO } from "./dto/createComment.dto";
 import { UpdateCommentDTO } from "./dto/updateComment.dto";
+import { getCurrentBrDateTimeISO } from "src/utils/getCurrentBrDateTimeISO";
 
 @Injectable()
 export class PartnerCommentService {
 	constructor(private readonly prismaService: PrismaService) { }
 
 	async addComment(comment: CreateCommentDTO) {
+		let commentPivot: any = comment;
+		commentPivot['createdAt'] = getCurrentBrDateTimeISO();
+		commentPivot['updatedAt'] = getCurrentBrDateTimeISO();
 		return await this.prismaService.partnerComment.create({
-			data: comment
+			data: commentPivot
 		})
 	}
 
@@ -41,6 +45,8 @@ export class PartnerCommentService {
 	}
 
 	update(id: string, comment: UpdateCommentDTO) {
+		let commentPivot: any = comment;
+		commentPivot['updatedAt'] = getCurrentBrDateTimeISO();
 		return this.prismaService.partnerComment.update({
 			data: comment,
 			where: {

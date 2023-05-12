@@ -12,6 +12,7 @@ export class UserController {
 	constructor(private userService: UserService) { }
 
 	@Post()
+	@UseGuards(AuthGuard('jwt'))
 	async CreateUser(@Body() userData: CreateUserDTO) {
 		return this.userService.create(userData);
 	}

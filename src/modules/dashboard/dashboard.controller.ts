@@ -10,7 +10,6 @@ export class DashboardController {
 	constructor(private dashboardService: DashboardService) { }
 
 	@Get()
-	@UseGuards(AuthGuard('jwt'))
 	async index() {
 		return await this.dashboardService.dashboard();
 	}

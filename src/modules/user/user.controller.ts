@@ -24,6 +24,13 @@ export class UserController {
 		return users;
 	}
 
+	@Get('/:id')
+	@UseGuards(AuthGuard('jwt'))
+	async show(@Param('id') id: string,) {
+		const users = this.userService.findById(id);
+		return users;
+	}
+
 	@Put('/:id')
 	@UseGuards(AuthGuard('jwt'))
 	async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {

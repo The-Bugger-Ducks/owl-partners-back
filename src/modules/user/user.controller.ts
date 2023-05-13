@@ -1,20 +1,33 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, NotFoundException, Param, Post, Put, UseGuards, forwardRef } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
 import { UpdateUserDTO } from "./dto/updateUser.dto";
+import { AuthService } from "../auth/auth.service";
+import { User } from "@prisma/client";
 
 @Controller('/users')
 @ApiTags('users')
 export class UserController {
 
-	constructor(private userService: UserService) { }
+	constructor(
+		private userService: UserService,
+		@Inject(forwardRef(() => AuthService))
+		private authService: AuthService
+	) { }
 
 	@Post()
-	@UseGuards(AuthGuard('jwt'))
 	async CreateUser(@Body() userData: CreateUserDTO) {
-		return this.userService.create(userData);
+		const createdUser = await this.userService.create(userData);
+
+		const user = { email: userData.email, password: userData.password }
+		const userLogged = await this.authService.login(user);
+
+		return {
+			user: createdUser as Omit<User, "password">,
+			token: userLogged.token
+		}
 	}
 
 	@Get()

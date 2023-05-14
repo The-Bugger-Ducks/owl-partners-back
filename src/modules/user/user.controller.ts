@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, NotFoundException, Param, Post, Put, UseGuards, forwardRef } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, NotFoundException, Param, Post, Put, Query, UseGuards, forwardRef } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "@nestjs/passport";
@@ -36,6 +36,14 @@ export class UserController {
 		const users = this.userService.findAll();
 		return users;
 	}
+
+	@Get('/search')
+	@UseGuards(AuthGuard('jwt'))
+	async usersByName(@Query('name') name: string) {
+		if (name === null || name === undefined) return this.userService.findAll();
+
+		return this.userService.findByName(name);
+	};
 
 	@Get('/:id')
 	@UseGuards(AuthGuard('jwt'))

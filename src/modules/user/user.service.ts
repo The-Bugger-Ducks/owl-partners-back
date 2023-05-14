@@ -24,6 +24,24 @@ export class UserService {
 		});
 	}
 
+	async findByName(name: string) {
+		return this.prismaService.user.findMany({
+			where: {
+				OR: [
+					{
+						name: { contains: name, mode: 'insensitive' },
+					},
+					{
+						lastName: { contains: name, mode: 'insensitive' }
+					}
+				],
+			},
+			orderBy: {
+				name: 'asc',
+			},
+		});
+	}
+
 	async create(user: CreateUserDTO) {
 		const hash = await bcrypt.hash(user.password, saltOrRounds);
 		user.password = hash;
@@ -34,9 +52,6 @@ export class UserService {
 	}
 
 	async update(user: UpdateUserDTO, id: string) {
-
-		console.log(user.password)
-
 		if (user.password) {
 			const hash = await bcrypt.hash(user.password, saltOrRounds);
 			user.password = hash;

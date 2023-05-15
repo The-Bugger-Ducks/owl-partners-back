@@ -1,7 +1,7 @@
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma/prisma.service";
 import { CreateUserDTO } from './dto/createUser.dto';
 import { UpdateUserDTO } from './dto/updateUser.dto';
@@ -17,15 +17,18 @@ export class UserService {
 	}
 
 	async findById(id: string) {
-		return this.prismaService.user.findUnique({
+		const user = await this.prismaService.user.findUnique({
 			where: {
 				id
 			}
 		});
+
+		if (user === null) throw new NotFoundException('Usuário não encontrado');
+		return user
 	}
 
 	async findByName(name: string) {
-		return this.prismaService.user.findMany({
+		return await this.prismaService.user.findMany({
 			where: {
 				OR: [
 					{

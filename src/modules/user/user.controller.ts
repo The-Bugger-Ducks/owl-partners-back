@@ -48,8 +48,8 @@ export class UserController {
 	@Get('/:id')
 	@UseGuards(AuthGuard('jwt'))
 	async show(@Param('id') id: string,) {
-		const users = this.userService.findById(id);
-		return users;
+		const user = await this.userService.findById(id);
+		return user;
 	}
 
 	@Put('/:id')

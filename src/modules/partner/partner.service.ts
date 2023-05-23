@@ -44,7 +44,7 @@ export class PartnerService {
 
 	async findByFilters(filters: Partial<Partner>): Promise<Partner[]> {
 		const filterMapping: { [key in keyof Partial<Partner>]?: (value: any) => Prisma.PartnerWhereInput } = {
-			name: (value) => ({ name: { contains: value } }),
+			name: (value) => ({ name: { contains: value, mode: 'insensitive' } }),
 			email: (value) => ({ email: { contains: value } }),
 			status: (value) => ({ status: { equals: value } }),
 			classification: (value) => ({ classification: { equals: value } }),

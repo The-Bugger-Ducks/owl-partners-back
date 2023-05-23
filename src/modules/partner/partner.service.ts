@@ -5,10 +5,13 @@ import { MeetingService } from '../meeting/meeting.service';
 
 import { CreatePartnerDTO } from './dto/createPartner.dto';
 import { UpdatePartnerDTO } from './dto/updatePartner.dto';
+import { Partner, Prisma } from '@prisma/client';
+import { PartnerStatus } from './enums/PartnerStatus';
+import { PartnerClassification } from './enums/PartnerClassification';
 
 @Injectable()
 export class PartnerService {
-	constructor(private readonly prismaService: PrismaService, private meetingService: MeetingService) {}
+	constructor(private readonly prismaService: PrismaService, private meetingService: MeetingService) { }
 
 	async create(partner: CreatePartnerDTO) {
 		return this.prismaService.partner.create({
@@ -37,6 +40,27 @@ export class PartnerService {
 				createdAt: 'desc',
 			},
 		});
+	}
+
+	async findByFilters(filters: Partial<Partner>): Promise<Partner[]> {
+		const filterMapping: { [key in keyof Partial<Partner>]?: (value: any) => Prisma.PartnerWhereInput } = {
+			name: (value) => ({ name: { contains: value } }),
+			email: (value) => ({ email: { contains: value } }),
+			status: (value) => ({ status: { equals: value } }),
+			classification: (value) => ({ classification: { equals: value } }),
+			disabled: (value) => ({ disabled: { equals: value } }),
+		};
+
+		const where: Prisma.PartnerWhereInput = {};
+
+		Object.entries(filters).forEach(([field, value]) => {
+			const filterCondition = filterMapping[field as keyof Partial<Partner>];
+			if (filterCondition && value !== undefined) {
+				Object.assign(where, filterCondition(value));
+			}
+		});
+
+		return this.prismaService.partner.findMany({ where });
 	}
 
 	async findById(id: string) {

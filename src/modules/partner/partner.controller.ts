@@ -5,11 +5,14 @@ import { CreatePartnerDTO } from './dto/createPartner.dto';
 import { UpdatePartnerDTO } from './dto/updatePartner.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Prisma } from '@prisma/client';
+import { PartnerStatus } from './enums/PartnerStatus';
+import { PartnerClassification } from './enums/PartnerClassification';
 
 @Controller('/partners')
 @ApiTags('partner')
 export class PartnerController {
-	constructor(private partnerService: PartnerService) {}
+	constructor(private partnerService: PartnerService) { }
 
 	@Post()
 	@UseGuards(AuthGuard('jwt'))
@@ -19,12 +22,15 @@ export class PartnerController {
 
 	@Get('/search')
 	@UseGuards(AuthGuard('jwt'))
-	async partnersByName(@Query('name') name: string, @Query('disabled') disabled: boolean) {
-		if (name === null || name === undefined) {
-			return this.partnerService.findAll(disabled);
-		}
+	async findByFilters(@Query() filters: {
+		name?: string;
+		email?: string;
+		status?: PartnerStatus;
+		classification?: PartnerClassification;
+		disabled?: boolean;
+	}): Promise<Prisma.PartnerWhereInput[]> {
 
-		return this.partnerService.findByName(name, disabled);
+		return await this.partnerService.findByFilters(filters);
 	}
 
 	@Get(':id')

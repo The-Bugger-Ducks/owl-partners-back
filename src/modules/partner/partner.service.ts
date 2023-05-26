@@ -48,7 +48,7 @@ export class PartnerService {
 			email: (value) => ({ email: { contains: value } }),
 			status: (value) => ({ status: { equals: value } }),
 			classification: (value) => ({ classification: { equals: value } }),
-			disabled: (value) => ({ disabled: { equals: value } }),
+			disabled: (value) => ({ disabled: { equals:Boolean(JSON.parse(value)) } }),
 		};
 
 		const where: Prisma.PartnerWhereInput = {};

@@ -8,14 +8,18 @@ import { AuthGuard } from '@nestjs/passport';
 import { Prisma } from '@prisma/client';
 import { PartnerStatus } from './enums/PartnerStatus';
 import { PartnerClassification } from './enums/PartnerClassification';
+import { HasRoles } from '../auth/decorators/has-roles.decorator';
+import { RoleEnum } from '../user/enums/role.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('/partners')
 @ApiTags('partner')
 export class PartnerController {
 	constructor(private partnerService: PartnerService) { }
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Post()
-	@UseGuards(AuthGuard('jwt'))
 	async createPartner(@Body() partnerData: CreatePartnerDTO) {
 		return this.partnerService.create(partnerData);
 	}
@@ -33,8 +37,9 @@ export class PartnerController {
 		return await this.partnerService.findByFilters(filters);
 	}
 
-	@Get(':id')
+
 	@UseGuards(AuthGuard('jwt'))
+	@Get(':id')
 	async partnerById(@Param('id') id: string) {
 		const partnerFound = await this.partnerService.findById(id);
 		if (partnerFound === null) throw new NotFoundException('Parceria não encontrada.');
@@ -58,8 +63,9 @@ export class PartnerController {
 		return this.partnerService.listMergedComments(partnerId);
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Put('/:id')
-	@UseGuards(AuthGuard('jwt'))
 	async updatePartner(@Param('id') id: string, @Body() dataToUpdate: UpdatePartnerDTO) {
 		const partnerFound = await this.partnerService.findById(id);
 
@@ -74,8 +80,9 @@ export class PartnerController {
 		};
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Delete('/:id')
-	@UseGuards(AuthGuard('jwt'))
 	async disablePartner(@Param('id') id: string) {
 		const partnerFound = await this.partnerService.findById(id);
 

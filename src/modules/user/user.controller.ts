@@ -6,6 +6,9 @@ import { ApiTags } from "@nestjs/swagger";
 import { UpdateUserDTO } from "./dto/updateUser.dto";
 import { AuthService } from "../auth/auth.service";
 import { User } from "@prisma/client";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { RoleEnum } from "./enums/role.enum";
+import { HasRoles } from "../auth/decorators/has-roles.decorator";
 
 @Controller('/users')
 @ApiTags('users')
@@ -13,10 +16,13 @@ export class UserController {
 
 	constructor(
 		private userService: UserService,
+
 		@Inject(forwardRef(() => AuthService))
 		private authService: AuthService
 	) { }
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
 		const createdUser = await this.userService.create(userData);
@@ -52,8 +58,8 @@ export class UserController {
 		return user;
 	}
 
-	@Put('/:id')
 	@UseGuards(AuthGuard('jwt'))
+	@Put('/:id')
 	async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {
 		const userUpdated = await this.userService.update(dataToUpdate, id);
 		return {
@@ -62,8 +68,9 @@ export class UserController {
 		}
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Delete('/:id')
-	@UseGuards(AuthGuard('jwt'))
 	async deleteUser(@Param('id') id: string) {
 		const userFound = await this.userService.findById(id);
 		if (userFound === null) throw new NotFoundException('Usuário não encontrado.')

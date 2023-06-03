@@ -44,6 +44,7 @@ export class PartnerService {
 
 	async findByFilters(filters: Partial<Partner>): Promise<Partner[]> {
 		console.log(filters);
+		console.log("-------");
 
 		const filterMapping: { [key in keyof Partial<Partner>]?: (value: any) => Prisma.PartnerWhereInput } = {
 			name: (value) => ({ name: { contains: value, mode: 'insensitive' } }),
@@ -61,6 +62,9 @@ export class PartnerService {
 				Object.assign(where, filterCondition(value));
 			}
 		});
+
+		console.log(where);
+		console.log("==============================================");
 
 		return this.prismaService.partner.findMany({ where });
 	}

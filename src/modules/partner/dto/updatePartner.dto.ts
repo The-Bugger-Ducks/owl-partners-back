@@ -14,7 +14,7 @@ export class UpdatePartnerDTO {
 	@ApiProperty()
 	email: string;
 
-	@MaxLength(14, { message: 'O telefone deve conter no máximo 14 caracteres' })
+	@MaxLength(15, { message: 'O telefone deve conter no máximo 15 caracteres' })
 	@MinLength(8, { message: 'O telefone deve conter pelo menos 8 caracteres' })
 	@IsOptional()
 	@ApiProperty()

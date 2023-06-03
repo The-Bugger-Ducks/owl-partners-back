@@ -4,6 +4,9 @@ import { UserController } from '../../src/modules/user/user.controller';
 import { PrismaService, User } from '../../src/database';
 import { UserService } from '../../src/modules/user/user.service';
 import { CreateUserDTO } from '../../src/modules/user/dto/createUser.dto';
+import { AuthService } from '../../src/modules/auth/auth.service';
+import { forwardRef } from '@nestjs/common';
+import { AuthModule } from '../../src/modules/auth/auth.module';
 
 const mockUsers: User[] = [
 	{
@@ -32,6 +35,7 @@ describe("User", () => {
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
+			imports: [forwardRef(() => AuthModule)],
 			controllers: [UserController],
 			providers: [UserService, PrismaService],
 		}).compile();
@@ -41,6 +45,8 @@ describe("User", () => {
 	});
 
 	afterEach(async () => await prismaService.$disconnect());
+
+	afterAll(async () => await prismaService.user.deleteMany());
 
 	it('should be defined', () => {
 		expect(controller).toBeDefined();
@@ -67,14 +73,18 @@ describe("User", () => {
 			password: "123456",
 			role: RoleEnum.SIMPLE,
 		}
-		const createdUser = await controller.CreateUser(user);
-		expect(createdUser).toEqual(expect.objectContaining(user));
 
-		await controller.deleteUser(createdUser.id);
+		const createUserResponse = await controller.CreateUser(user);
+
+		expect(createUserResponse.user).toEqual(expect.objectContaining(user));
+		expect(createUserResponse.token).toBeTruthy();
+
+		await controller.deleteUser(createUserResponse.user.id);
 		// Verifica se o usuário foi removido do banco de dados.
 		const deletedUser = await prismaService.user.findUnique({
-			where: { id: createdUser.id },
+			where: { id: createUserResponse.user.id },
 		});
+
 		expect(deletedUser).toBeNull();
 	});
 })

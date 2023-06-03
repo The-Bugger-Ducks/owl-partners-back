@@ -4,12 +4,17 @@ import { PartnerCommentService } from "./partnerComment.service";
 import { UpdateCommentDTO } from "./dto/updateComment.dto";
 import { ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
+import { HasRoles } from "../auth/decorators/has-roles.decorator";
+import { RoleEnum } from "../user/enums/role.enum";
+import { RolesGuard } from "../auth/guards/roles.guard";
 
 @Controller('partners')
 @ApiTags('partnerComments')
 export class PartnerCommentController {
 	constructor(private readonly partnerCommentService: PartnerCommentService) { }
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Post('comment')
 	async addComment(@Body() commentData: CreateCommentDTO) {
 		return await this.partnerCommentService.addComment(commentData);
@@ -21,8 +26,9 @@ export class PartnerCommentController {
 		return await this.partnerCommentService.listCommentsByPartner(partnerId);
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Put('comment/:commentId')
-	@UseGuards(AuthGuard('jwt'))
 	async update(@Param('commentId') commentId: string, @Body() commentData: UpdateCommentDTO) {
 		return await this.partnerCommentService.update(commentId, commentData);
 	}

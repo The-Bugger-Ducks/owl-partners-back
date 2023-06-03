@@ -1,4 +1,9 @@
-{
+import dotenv from 'dotenv';
+
+// Carrega as variáveis de ambiente do arquivo test.env
+dotenv.config({ path: '.env.test' });
+
+export default {
 	"moduleFileExtensions": [
 		"js",
 		"json",

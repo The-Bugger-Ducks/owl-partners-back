@@ -1,19 +1,39 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, NotFoundException, Param, Post, Put, Query, UseGuards, forwardRef } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
 import { UpdateUserDTO } from "./dto/updateUser.dto";
+import { AuthService } from "../auth/auth.service";
+import { User } from "@prisma/client";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { RoleEnum } from "./enums/role.enum";
+import { HasRoles } from "../auth/decorators/has-roles.decorator";
 
 @Controller('/users')
 @ApiTags('users')
 export class UserController {
 
-	constructor(private userService: UserService) { }
+	constructor(
+		private userService: UserService,
 
+		@Inject(forwardRef(() => AuthService))
+		private authService: AuthService
+	) { }
+
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
-		return this.userService.create(userData);
+		const createdUser = await this.userService.create(userData);
+
+		const user = { email: userData.email, password: userData.password }
+		const userLogged = await this.authService.login(user);
+
+		return {
+			user: createdUser,
+			token: userLogged.token
+		}
 	}
 
 	@Get()
@@ -23,8 +43,23 @@ export class UserController {
 		return users;
 	}
 
-	@Put('/:id')
+	@Get('/search')
 	@UseGuards(AuthGuard('jwt'))
+	async usersByName(@Query('name') name: string) {
+		if (name === null || name === undefined) return this.userService.findAll();
+
+		return this.userService.findByName(name);
+	};
+
+	@Get('/:id')
+	@UseGuards(AuthGuard('jwt'))
+	async show(@Param('id') id: string,) {
+		const user = await this.userService.findById(id);
+		return user;
+	}
+
+	@UseGuards(AuthGuard('jwt'))
+	@Put('/:id')
 	async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {
 		const userUpdated = await this.userService.update(dataToUpdate, id);
 		return {
@@ -33,8 +68,9 @@ export class UserController {
 		}
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Delete('/:id')
-	@UseGuards(AuthGuard('jwt'))
 	async deleteUser(@Param('id') id: string) {
 		const userFound = await this.userService.findById(id);
 		if (userFound === null) throw new NotFoundException('Usuário não encontrado.')

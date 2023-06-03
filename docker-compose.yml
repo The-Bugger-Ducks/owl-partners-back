@@ -2,20 +2,24 @@ version: '3.5'
 
 services:
   postgres:
-    container_name: owlPartners_postgres
     image: postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: owlPartners
-      PGDATA: /data/postgres
-    volumes:
-      - postgres:/data/postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
+    volumes:
+      - postgres:/data/postgres
+
+  db-test:
+    image: postgres
+    environment:
+      POSTGRES_DB: owlPartners-test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    ports:
+      - "8888:5432"
 
 networks:
   postgres:

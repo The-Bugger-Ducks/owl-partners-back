@@ -5,20 +5,30 @@ import { AuthGuard } from '@nestjs/passport';
 import { MeetingService } from './meeting.service';
 import { CreateMeetingDTO } from './dto/createMeeting.dto';
 import { UpdateMeetingDTO } from './dto/updateMeeting.dto';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { HasRoles } from '../auth/decorators/has-roles.decorator';
+import { RoleEnum } from '../user/enums/role.enum';
 
 @Controller('/meetings')
 @ApiTags('meetings')
 export class MettingController {
 	constructor(private meetingService: MeetingService) { }
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Post()
-	@UseGuards(AuthGuard('jwt'))
 	async createPartner(@Body() meetingData: CreateMeetingDTO) {
 		return this.meetingService.create(meetingData);
 	}
 
-	@Get(':id')
 	@UseGuards(AuthGuard('jwt'))
+	@Get()
+	async meetings() {
+		return this.meetingService.findAll();
+	}
+
+	@UseGuards(AuthGuard('jwt'))
+	@Get(':id')
 	async meetingById(@Param('id') id: string) {
 		const meetingFound = await this.meetingService.findById(id);
 
@@ -27,20 +37,15 @@ export class MettingController {
 		return this.meetingService.findById(id);
 	}
 
-	@Get()
 	@UseGuards(AuthGuard('jwt'))
-	async meetings() {
-		return this.meetingService.findAll();
-	}
-
 	@Get('partner/:partnerId')
-	@UseGuards(AuthGuard('jwt'))
 	async meetingsByPartner(@Param('partnerId') partnerId: string) {
 		return this.meetingService.findByPartnerId(partnerId);
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Put('/:id')
-	@UseGuards(AuthGuard('jwt'))
 	async updateMeeting(@Param('id') id: string, @Body() dataToUpdate: UpdateMeetingDTO) {
 		const meetingFound = await this.meetingService.findById(id);
 
@@ -53,8 +58,9 @@ export class MettingController {
 		};
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Delete('/:id')
-	@UseGuards(AuthGuard('jwt'))
 	async deleteMeeting(@Param('id') id: string) {
 		const meetingFound = await this.meetingService.findById(id);
 

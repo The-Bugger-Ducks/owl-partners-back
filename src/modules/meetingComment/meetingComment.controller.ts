@@ -20,26 +20,31 @@ import { MeetingCommentService } from './meetingComment.service';
 
 import { CreateMeetingCommentDTO } from './dto/createMeetingComment.dto';
 import { UpdateMeetingCommentDTO } from './dto/updateMeetingComment.dto';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { RoleEnum } from '../user/enums/role.enum';
+import { HasRoles } from '../auth/decorators/has-roles.decorator';
 
 @Controller('/meetings')
 @ApiTags('partnerComments')
 export class MettingCommentController {
-	constructor(private meetingCommentService: MeetingCommentService) {}
+	constructor(private meetingCommentService: MeetingCommentService) { }
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Post('comment')
-	@UseGuards(AuthGuard('jwt'))
 	async createMeetingComment(@Body() meetingCommentData: CreateMeetingCommentDTO) {
 		return this.meetingCommentService.create(meetingCommentData);
 	}
 
-	@Get('comment/:meetingId')
 	@UseGuards(AuthGuard('jwt'))
+	@Get('comment/:meetingId')
 	async list(@Param('meetingId') meetingId: string) {
 		return await this.meetingCommentService.listCommentsByMeeting(meetingId);
 	}
 
+	@HasRoles(RoleEnum.ADMIN)
+	@UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Put('comment/:commentId')
-	@UseGuards(AuthGuard('jwt'))
 	async update(@Param('commentId') commentId: string, @Body() commentData: UpdateMeetingCommentDTO, @Request() req) {
 		const user: User = req.user;
 

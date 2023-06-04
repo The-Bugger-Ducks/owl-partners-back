@@ -20,9 +20,7 @@ export class UserController {
 		@Inject(forwardRef(() => AuthService))
 		private authService: AuthService
 	) { }
-
-	@HasRoles(RoleEnum.ADMIN)
-	@UseGuards(AuthGuard('jwt'), RolesGuard)
+	
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
 		const createdUser = await this.userService.create(userData);
@@ -31,7 +29,7 @@ export class UserController {
 		const userLogged = await this.authService.login(user);
 
 		return {
-			user: createdUser as Omit<User, "password">,
+			user: createdUser,
 			token: userLogged.token
 		}
 	}

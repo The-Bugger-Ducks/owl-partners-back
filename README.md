@@ -47,29 +47,6 @@ Caso queira usar o Insomnia para testar as rotas, use o arquivo Insomnia_2023_mm
 ## :railway_track: Rotas disponíveis
 Para acessar as rotas disponiveis acesse o link para o [https://owlpartners.onrender.com/api](Swagger) na nuvem ou para o [http://localhost:3000](SwagerLocalhost)
 
-<div align="center">
-
-|                                                                    Tipo | Rota                               | Ação                                |
-| :---------------------------------------------------------------------- | :--------------------------------- | :---------------------------------- |
-|   <hr>                                                                  | <hr>                               | **Controle de usuários**            |
-|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/users/`                          | Cadastro de usuários                |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/`                          | Listagem de usuários                |
-| [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/users/{userId}`                  | Exclusão de um usuário específico   |
-|   <hr>                                                                  | <hr>                               | **Controle de parcerias**           |
-|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/partners/`                       | Criação de parceria                 |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/partners/`                       | Listagem de parcerias               |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/partners/search/:name`           | Listagem de especificas por nome    |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/partners/{partnerId}`        | Visualização de uma parceria específica |
-|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/partners/{partnerId}`            | Editar dados da parceria específica |
-| [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/partners/{partnerId}`         | Desativação de uma parceria específica |
-|   <hr>                                                                  | <hr>                         | **Controle de anotações sobre parcerias** |
-|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/partners/comment`                | Cadastrar anotação sobre a parceria |
-|   [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]()  | `/partners/comment/:commentId`   | Visualizar anotações sobre a parceria |
-|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/partners/comment/:commentId`     | Atualizar anotação sobre a parceria |
-|   <hr>                                                                  | <hr>                         			 | **Autenticação de usuários**        |
-|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/auth/login`               	 | Autenticaçãr usuários com email e senha |
-
-</div>
 
 ### Explicação da estrutura das pastas
 

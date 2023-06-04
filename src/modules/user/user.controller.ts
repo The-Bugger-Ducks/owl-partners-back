@@ -20,12 +20,12 @@ export class UserController {
 		@Inject(forwardRef(() => AuthService))
 		private authService: AuthService
 	) { }
-	
+
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
 		const createdUser = await this.userService.create(userData);
 
-		const user = { email: userData.email, password: userData.password }
+		const user = { email: userData.email, password: userData.password, role: userData.role ? userData.role : RoleEnum.SIMPLE }
 		const userLogged = await this.authService.login(user);
 
 		return {

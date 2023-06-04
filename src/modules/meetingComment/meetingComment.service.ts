@@ -4,12 +4,16 @@ import { PrismaService } from 'src/database/prisma/prisma.service';
 
 import { CreateMeetingCommentDTO } from './dto/createMeetingComment.dto';
 import { UpdateMeetingCommentDTO } from './dto/updateMeetingComment.dto';
+import { getCurrentBrDateTimeISO } from 'src/utils/getCurrentBrDateTimeISO';
 
 @Injectable()
 export class MeetingCommentService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(private readonly prismaService: PrismaService) { }
 
 	async create(comment: CreateMeetingCommentDTO) {
+		comment['createdAt'] = getCurrentBrDateTimeISO();
+		comment['updatedAt'] = getCurrentBrDateTimeISO();
+
 		return this.prismaService.meetingComment.create({
 			data: comment,
 		});
@@ -57,6 +61,8 @@ export class MeetingCommentService {
 	}
 
 	async update(id: string, comment: UpdateMeetingCommentDTO) {
+		comment['updatedAt'] = getCurrentBrDateTimeISO();
+
 		return this.prismaService.meetingComment.update({
 			data: comment,
 			where: {

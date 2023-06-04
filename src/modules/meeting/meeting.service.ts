@@ -11,6 +11,10 @@ export class MeetingService {
 	constructor(private readonly prismaService: PrismaService) { }
 
 	async create(meeting: CreateMeetingDTO) {
+
+		meeting['createdAt'] = getCurrentBrDateTimeISO();
+		meeting['updatedAt'] = getCurrentBrDateTimeISO();
+
 		return this.prismaService.meeting.create({
 			data: meeting,
 		});
